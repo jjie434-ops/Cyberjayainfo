@@ -16,7 +16,12 @@ const ADS_CONVERSION_LABELS = {
 function fireAdsConversion(type) {
   const label = ADS_CONVERSION_LABELS[type];
   if (typeof window.gtag !== "function" || !label) return;
-  window.gtag("event", "conversion", { send_to: `${ADS_CONVERSION_ID}/${label}` });
+  // transport_type "beacon" uses navigator.sendBeacon so the conversion is sent
+  // reliably even when the WhatsApp link navigates the page away immediately.
+  window.gtag("event", "conversion", {
+    send_to: `${ADS_CONVERSION_ID}/${label}`,
+    transport_type: "beacon",
+  });
 }
 // ============================================================================
 
