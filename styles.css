@@ -145,7 +145,7 @@ a {
   display: grid;
   align-items: end;
   padding: clamp(54px, 8vw, 96px) clamp(22px, 5vw, 70px);
-  background-image: linear-gradient(90deg, rgba(8, 15, 23, 0.84), rgba(8, 15, 23, 0.34) 44%, rgba(8, 15, 23, 0.08)), url("assets/pc-hero.png");
+  background-image: linear-gradient(90deg, rgba(8, 15, 23, 0.84), rgba(8, 15, 23, 0.34) 44%, rgba(8, 15, 23, 0.08)), url("assets/pc-hero.webp");
   background-position: center;
   background-size: cover;
   color: #fff;
@@ -576,6 +576,30 @@ a {
   text-transform: uppercase;
 }
 
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: clamp(28px, 4vw, 44px);
+  padding-top: 22px;
+  border-top: 1px solid #2f2925;
+  color: rgba(248, 243, 238, 0.6);
+  font-size: 12px;
+}
+
+.footer-legal-links {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.footer-legal a {
+  color: rgba(248, 243, 238, 0.82);
+  text-underline-offset: 3px;
+}
+
 .floating-whatsapp {
   position: fixed;
   right: 28px;
@@ -647,7 +671,7 @@ a {
   .hero {
     min-height: 650px;
     padding: 44px 22px 42px;
-    background-image: linear-gradient(180deg, rgba(8, 15, 23, 0.16), rgba(8, 15, 23, 0.9)), url("assets/phone-hero.png");
+    background-image: linear-gradient(180deg, rgba(8, 15, 23, 0.16), rgba(8, 15, 23, 0.9)), url("assets/phone-hero.webp");
     background-position: center top;
   }
 

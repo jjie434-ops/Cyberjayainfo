@@ -1,6 +1,25 @@
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyyDBx6AlIERwyKhAsLuzLHTcwJNvuA38613Xex_ic7w5tUrWbwPZL2Tpqk48UxFPyA/exec";
 const WHATSAPP_LEAD_NUMBER = "60183759228";
 
+// === Google Ads conversion tracking =========================================
+// gtag.js for AW-18214182069 is loaded in index.html, but a conversion is only
+// recorded when gtag('event','conversion', ...) fires. Paste the "label" for
+// each conversion action from Google Ads → Goals → Conversions → [action] →
+// "Tag setup" (the value after the slash, e.g. AW-18214182069/AbCdEf...).
+// Leave a label as "" to skip it safely until you have it.
+const ADS_CONVERSION_ID = "AW-18214182069";
+const ADS_CONVERSION_LABELS = {
+  whatsapp: "z00FCNbkiLscELW5me1D", // "Submit lead form whatsapp and google sheet" action
+  form: "z00FCNbkiLscELW5me1D",     // same combined lead action
+};
+
+function fireAdsConversion(type) {
+  const label = ADS_CONVERSION_LABELS[type];
+  if (typeof window.gtag !== "function" || !label) return;
+  window.gtag("event", "conversion", { send_to: `${ADS_CONVERSION_ID}/${label}` });
+}
+// ============================================================================
+
 const plans = {
   "1233sqft.png": "1,233 sqft",
   "1237sqft.png": "1,237 sqft",
@@ -111,6 +130,10 @@ function setupTrackingLinks() {
         label: element.textContent.trim(),
         href: element.getAttribute("href") || "",
       });
+
+      if (element.dataset.track === "whatsapp") {
+        fireAdsConversion("whatsapp");
+      }
     });
   });
 }
@@ -149,6 +172,8 @@ function setupLeadForm() {
       utm_content: lead.utm_content,
     });
 
+    fireAdsConversion("form");
+
     const whatsAppUrl = openWhatsAppLead(lead);
     setFormStatus(status, "WhatsApp opened. Saving your enquiry...", whatsAppUrl);
 
@@ -169,10 +194,16 @@ function setupLeadForm() {
   });
 }
 
+function setupFooterYear() {
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+}
+
 function init() {
   setupPlanSelector();
   setupTrackingLinks();
   setupLeadForm();
+  setupFooterYear();
 }
 
 document.addEventListener("DOMContentLoaded", init);
