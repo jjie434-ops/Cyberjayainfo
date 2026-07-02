@@ -9,19 +9,24 @@ const WHATSAPP_LEAD_NUMBER = "60183759228";
 // Leave a label as "" to skip it safely until you have it.
 const ADS_CONVERSION_ID = "AW-18214182069";
 const ADS_CONVERSION_LABELS = {
-  whatsapp: "z00FCNbkiLscELW5me1D", // "Submit lead form whatsapp and google sheet" action
-  form: "z00FCNbkiLscELW5me1D",     // same combined lead action
+  whatsapp: "z00FCNbkiLscELW5me1D", // "Submit lead form whatsapp and google sheet" (secondary)
+  form: "s6aiCM7RqMkcELW5me1D",     // "Form Submit" — primary lead action (value 1.0 MYR)
 };
 
 function fireAdsConversion(type) {
   const label = ADS_CONVERSION_LABELS[type];
   if (typeof window.gtag !== "function" || !label) return;
-  // transport_type "beacon" uses navigator.sendBeacon so the conversion is sent
-  // reliably even when the WhatsApp link navigates the page away immediately.
-  window.gtag("event", "conversion", {
+  const payload = {
     send_to: `${ADS_CONVERSION_ID}/${label}`,
+    // transport_type "beacon" uses navigator.sendBeacon so the conversion is
+    // sent reliably even when the WhatsApp link navigates the page away.
     transport_type: "beacon",
-  });
+  };
+  if (type === "form") {
+    payload.value = 1.0;
+    payload.currency = "MYR";
+  }
+  window.gtag("event", "conversion", payload);
 }
 // ============================================================================
 
